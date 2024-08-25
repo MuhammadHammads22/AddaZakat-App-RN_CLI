@@ -97,10 +97,8 @@ const Home = ({ navigation }) => {
     <FlatList
     style={styles.feed}
     data={data}
-    renderItem={(post) =>
-
-      <PostCard postData={post} navigation={navigation} isLoading={isLoading} />
-
+    renderItem={(post,index) =>
+      <PostCard postData={post} key={index} navigation={navigation} isLoading={isLoading} />
     }
     keyExtractor={item => item.id}
     showsVerticalScrollIndicator={false}

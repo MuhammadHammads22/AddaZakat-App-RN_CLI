@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useCommentMutation, useGetCommentsQuery } from '../Api/Posts';
 import { useRoute } from '@react-navigation/native';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+// import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Comment from '../Components/Comment';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -34,7 +34,7 @@ export default function CommentScreen() {
   
 
 
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  // const bottomSheetRef = useRef<BottomSheet>(null);
 
   // callbacks
   const handleSheetChanges = useCallback((index) => {
@@ -44,40 +44,40 @@ export default function CommentScreen() {
     
 
 
-    <View style={styles.container}>
-      <BottomSheet
-        ref={bottomSheetRef}
-        onChange={handleSheetChanges}
-      >
-        <BottomSheetView style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
-        </BottomSheetView>
-      </BottomSheet>
-    </View>
-
-
-    
-    
-    // <SafeAreaView style={{flex:1}}>
-    //   {/* {console.log(commentList)} */}
-    //   <ScrollView>
-    // <View style={{ flex: 1, padding: 5 ,paddingBottom:8}}>
-    //   <View style={{flexDirection:'row',backgroundColor:'white',alignItems:'center',padding:8,borderRadius:10}}>
-    //     <TextInput placeholder='comment' value={comment} onChangeText={(text)=>{setComment(text)}} style={{ flex: 1, backgroundColor: 'white' ,fontSize:20}} />
-    //     <TouchableOpacity onPress={makeComment}>
-    //       <MaterialIcons name='send' size={responsiveWidth(7.5)} color="gray" />
-    //     </TouchableOpacity>
-    //   </View>
-    //   {[...commentList].reverse().map((item) => {
-    //     return (
-    //       <Comment key={item.id} name={item.user} comment={item.body} />
-    //     )
-    //   })}
-    //   {/* <Text>comments{data}</Text> */}
-    //   {/* <Button onPress={makeComment} title='make comment' /> */}
+    // <View style={styles.container}>
+    //   <BottomSheet
+    //     ref={bottomSheetRef}
+    //     onChange={handleSheetChanges}
+    //   >
+    //     <BottomSheetView style={styles.contentContainer}>
+    //       <Text>Awesome 🎉</Text>
+    //     </BottomSheetView>
+    //   </BottomSheet>
     // </View>
-    // </ScrollView>
-    // </SafeAreaView>
+
+
+    
+    
+    <SafeAreaView style={{flex:1}}>
+      {/* {console.log(commentList)} */}
+      <ScrollView>
+    <View style={{ flex: 1, padding: 5 ,paddingBottom:8}}>
+      <View style={{flexDirection:'row',backgroundColor:'white',alignItems:'center',padding:8,borderRadius:10}}>
+        <TextInput placeholder='comment' value={comment} onChangeText={(text)=>{setComment(text)}} style={{ flex: 1, backgroundColor: 'white' ,fontSize:20}} />
+        <TouchableOpacity onPress={makeComment}>
+          <MaterialIcons name='send' size={responsiveWidth(7.5)} color="gray" />
+        </TouchableOpacity>
+      </View>
+      {[...commentList].reverse().map((item) => {
+        return (
+          <Comment key={item.id} name={item.user} comment={item.body} />
+        )
+      })}
+      {/* <Text>comments{data}</Text> */}
+      {/* <Button onPress={makeComment} title='make comment' /> */}
+    </View>
+    </ScrollView>
+    </SafeAreaView>
   
   )
 }

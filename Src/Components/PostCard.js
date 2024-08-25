@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -17,9 +17,12 @@ const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 const PostCard = (post) => {
   const userState = useSelector((state) => state.userInfo.userInfo)
   // console.log("user state from post card",userState.accessToken)
-  // console.log('token prop',post.userData)
+  // console.log('token prop',post.postData.item)
   // upvote handling! 
-  const screenWidth=Dimensions.get('window').width
+  const screenWidth=Dimensions.get('window')
+  // useEffect(()=>{
+  //   console.log(screenWidth.width,responsiveWidth(100))
+  // })
   const [carouselData,setCarouselData]=useState(["https://addazakat.s3.ap-south-1.amazonaws.com/posts/abuubaida01/1.mp4","https://addazakat.s3.ap-south-1.amazonaws.com/posts/abuubaida01/5.mp4"])
   const [loading,setLoading]=useState(post.isLoading)
   const [upvote, setUpvotes] = useState(post.postData.item.upvote_count)
@@ -31,6 +34,7 @@ const PostCard = (post) => {
   const [downvoteMutation] = useDownvoteMutation()
 
   const handleUpvote = (event) => {
+    // console.log(event.timestamp).type.target.
     event.stopPropagation();
     if (!isUpvoted) {
       setUpvotes(upvote + 1)
@@ -71,7 +75,7 @@ const PostCard = (post) => {
 
 
   return ( 
-    
+    <TouchableOpacity onPress={()=>{post.navigation.navigate('DetailedPostScreen',post.postData.item)}}>
     <View style={styles.mainPost}>
       <View style={styles.upperPost}>
         {/* postheader */}
@@ -147,6 +151,7 @@ const PostCard = (post) => {
 
       </View>
     </View>
+    </TouchableOpacity>
     
     
     

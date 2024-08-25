@@ -26,6 +26,7 @@ import CommentScreen from './Src/Screens/CommentScreen';
 import { getAccessToken, getUserData } from './Src/store/localStore';
 import { setUserInfo } from './Src/Slices/UserSlice';
 import CreatePostScreen from './Src/Screens/CreatePostScreen';
+import DetailedPostScreen from './Src/Screens/DetailedPostScreen';
 // import { PersistGate } from 'redux-persist/integration/react';
 
 function App(){
@@ -64,7 +65,7 @@ function MyStack() {
     <Stack.Screen name="HomeGraph" component={HomeGraph} />
     <Stack.Screen name="CommentsScreen" component={CommentScreen} options={{presentation:'modal',headerShown:true}} />
     <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} options={{presentation:'modal'}} />
-
+    <Stack.Screen name="DetailedPostScreen" component={DetailedPostScreen} options={{headerShown:true,title:'Details'}}/>
   </Stack.Navigator>)
 }else{
   return(
@@ -77,6 +78,7 @@ function MyStack() {
       <Stack.Screen name="HomeGraph" component={HomeGraph} />
       <Stack.Screen name="CommentsScreen" component={CommentScreen} options={{presentation:'modal',headerShown:true}} />
       <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} options={{presentation:'modal'}}/>
+      <Stack.Screen name="DetailedPostScreen" component={DetailedPostScreen} options={{presentation:'modal'}}/>
     </Stack.Navigator>)
 }
 }

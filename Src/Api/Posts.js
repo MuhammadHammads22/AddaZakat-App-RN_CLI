@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const postApis = createApi({
   reducerPath: 'postApis',
   baseQuery: fetchBaseQuery({ 
-    baseUrl: 'https://addazakat.uk.to/post/'   
+    baseUrl: 'http://api.addazakat.com//post/'   
   }),
   
   endpoints: (builder) => ({
