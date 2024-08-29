@@ -12,11 +12,15 @@ const DetailedPostScreen = () => {
 
     const { width: windowWidth } = useWindowDimensions();
     // const screenWidth=Dimensions.get('window').width
-
+    useEffect(()=>{
+        (async function name(){
+            console.log('2')
+        })()
+    })
 
     const nav = useNavigation()
     useLayoutEffect(() => {
-        nav.setOptions({ headertitle: "Details", headerShow: true })
+        // nav.setOptions({ headertitle: "Details", headerShow: true })
     }, [])
 
     const { account_number,
@@ -63,48 +67,48 @@ const DetailedPostScreen = () => {
 
 
     // const [rightButtonOpacity] = useState(new Animated.Value(1));
-    useEffect(() => {
-        // Trigger animation based on index
-        Animated.timing(rightButtonOpacity, {
-            toValue: index < videoSection.length - 1 ? 1 : 0,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
-    }, [index, rightButtonOpacity]);
+    // useEffect(() => {
+    //     // Trigger animation based on index
+    //     Animated.timing(rightButtonOpacity, {
+    //         toValue: index < videoSection.length - 1 ? 1 : 0,
+    //         duration: 300,
+    //         useNativeDriver: true,
+    //     }).start();
+    // }, [index, rightButtonOpacity]);
 
 
     return (
         <View style={{ width: responsiveWidth(100), height: responsiveHeight(45) }}>
-                <Animated.View style={{opacity:leftButtonOpacity,width: 40,
-                    height: 40,
-                    borderRadius: 20,
+                <Animated.View style={{opacity:leftButtonOpacity,width: 30,
+                    height: 30,
+                    borderRadius: 10,
                     position: 'absolute',
                     zIndex: 3,
                     top: responsiveHeight(20), // Adjusted for simplicity
                     left: responsiveWidth(2),
-                    transform: [{ translateY: -20 }],}}>
+                    transform: [{ translateY: -15 }],}}>
                     <TouchableOpacity onPress={scrollPrevious} style={{
-                        width: 40, height: 40, borderRadius: 20
+                        width: 30, height: 30, borderRadius: 10
                     }}>
-                        <AntDesign name='leftcircle' color='white' size={40} />
+                        <AntDesign name='leftcircle' color='white' size={30} />
                     </TouchableOpacity>
                 </Animated.View>
            
             
-                <Animated.View style={{opacity:rightButtonOpacity,width: 40,
-                    height: 40,
-                    borderRadius: 20,
+                <Animated.View style={{opacity:rightButtonOpacity,width: 30,
+                    height: 30,
+                    borderRadius: 10,
                     position: 'absolute',
                     zIndex: 3,
                     top: responsiveHeight(20), // Adjusted for simplicity
                     right: responsiveWidth(2),
-                    transform: [{ translateY: -20 }],}}>
+                    transform: [{ translateY: -15 }],}}>
                     <TouchableOpacity
                         onPress={scrollNext}
                         style={{
-                            width: 40, height: 40, borderRadius: 20
+                            width: 30, height: 30, borderRadius: 10
                         }}>
-                        <AntDesign name='rightcircle' color='white' size={40} />
+                        <AntDesign name='rightcircle' color='white' size={30} />
                     </TouchableOpacity>
                 </Animated.View>
            
@@ -117,7 +121,7 @@ const DetailedPostScreen = () => {
                 pagingEnabled={true}
                 data={videoSection}
                 showsHorizontalScrollIndicator={false}
-                scrollEventThrottle={16}
+                scrollEventThrottle={1000}
                 onScroll={                    
                     Animated.event([
                     {
@@ -136,9 +140,9 @@ const DetailedPostScreen = () => {
                     const newIndex = Math.round(contentOffsetX / windowWidth);
                     setIndex(newIndex);
                 }}
-                renderItem={(item, index) => {
+                renderItem={(item) => {
                     return (
-                        <VideoPager data={item} key={index} />
+                        <VideoPager data={item} key={index} paused={index} />
                     )
                 }
                 }

@@ -4,7 +4,7 @@ import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimen
 import Video from 'react-native-video'
 
 const VideoPager = (params) => {
-    // console.log('params:',params)
+    // console.log('paused:',params.paused!=params.data.index)
     return (
         <View>
             {params.data.item.url ?
@@ -13,7 +13,7 @@ const VideoPager = (params) => {
                     <Video
                         source={{ uri: params.data.item.url }} // Can be a URL or a local file.
                         style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
-                        paused={true}
+                        paused={params.paused!=params.data.index}
                         controls={false} // Display default video controls
                         resizeMode="cover" // Can be "contain", "cover", "stretch", etc.
                         onError={(error) => console.log('Video Error:', error)} // Callback when video cannot be loaded

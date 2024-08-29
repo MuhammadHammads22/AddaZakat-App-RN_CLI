@@ -34,6 +34,12 @@ function App(){
 const [initialRoute,setInitialRoute]=useState("")
 const Stack = createNativeStackNavigator();
 useEffect(()=>{
+  let b=5
+  let a=b
+  b=4
+  console.log(a)
+
+  
   async function getToken(){
     try{
     var data= await getUserData() 
