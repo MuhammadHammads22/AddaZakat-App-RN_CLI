@@ -60,7 +60,7 @@ const SignUpForm = ({navigation}) => {
         setErrorServer("Registration successful!. Verify your email.")
         
       } else{
-
+        console.log('signup',data.error.data)
          const errors=SignupValidation(data.error.data)
          errors.error.forEach((Item,index)=>{
              switch(Item){

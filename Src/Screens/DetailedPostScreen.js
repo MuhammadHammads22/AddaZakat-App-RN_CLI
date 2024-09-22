@@ -12,16 +12,12 @@ const DetailedPostScreen = () => {
 
     const { width: windowWidth } = useWindowDimensions();
     // const screenWidth=Dimensions.get('window').width
-    useEffect(()=>{
-        (async function name(){
-            console.log('2')
-        })()
-    })
+ 
 
-    const nav = useNavigation()
-    useLayoutEffect(() => {
-        // nav.setOptions({ headertitle: "Details", headerShow: true })
-    }, [])
+    // const nav = useNavigation()
+    // useLayoutEffect(() => {
+    //     // nav.setOptions({ headertitle: "Details", headerShow: true })
+    // }, [])
 
     const { account_number,
         address, admin_message, bank_name, bank_title, blur_face, comment_count,
@@ -78,7 +74,7 @@ const DetailedPostScreen = () => {
 
 
     return (
-        <View style={{ width: responsiveWidth(100), height: responsiveHeight(45) }}>
+        <View style={{ width: responsiveWidth(100), height: responsiveHeight(45) ,backgroundColor:'orange'}}>
                 <Animated.View style={{opacity:leftButtonOpacity,width: 30,
                     height: 30,
                     borderRadius: 10,

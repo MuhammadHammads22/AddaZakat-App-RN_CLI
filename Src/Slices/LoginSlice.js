@@ -4,10 +4,10 @@ import { setToInitialState } from './SignupSlice';
 // Initial states
 const initialState = {
   login: {
-    email: 'jana@gmail.com',
+    email: 'demo.user@addazakat.com',
     errorEmail: '',
     isErrorEmail: false,
-    password: 'admin123123W@',
+    password: 'demo123',
     errorPassword: '',
     isErrorPassword: false,
     passwordHidden: true

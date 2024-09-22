@@ -6,6 +6,8 @@ import Home from './Home';
 import Saved from './Saved';
 import Profile from './Profile';
 import Satisfied from './Satisfied';
+import Entypo from 'react-native-vector-icons/Entypo';
+import IonIcons from 'react-native-vector-icons/Ionicons';
 // import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 
@@ -36,16 +38,11 @@ const HomeGraph = ({navigation}) => {
             // animationTypeForReplace:'pop',
             tabBarActiveTintColor: 'white',
             tabBarIcon: ({focused}) => (
-              <Image
-                source={require('C:\\Users\\hammad\\Desktop\\ReactNative\\practice\\adazakat\\Src\\Assets\\home.png')}
-                style={{
-                  width: 20,
-                  height: 20,
-                  tintColor: focused ? 'white' : 'gray',
-                }}
-              />
-            )}} name="Home" component={Home}  />
-      <Tab.Screen options={{
+              <Entypo name='home' color={focused ? 'white' : 'gray'} size={responsiveWidth(6)} />
+            )}}
+            name="Home"
+            component={Home}  />
+      {/* <Tab.Screen options={{
             // gestureEnabled:true,
             // animationTypeForReplace:'pop',
             headerTitle:'Satisfied',
@@ -59,37 +56,25 @@ const HomeGraph = ({navigation}) => {
                   tintColor: focused ? 'white' : 'gray',
                 }}
               />
-            )}} name="Satisfied" component={Satisfied} />
+            )}} name="Satisfied" component={Satisfied} /> */}
       <Tab.Screen options={{
             // gestureEnabled:true,
             // animationTypeForReplace:'pop',
             headerTitle:'Saved',
             tabBarActiveTintColor: 'white',
             tabBarIcon: ({focused}) => (
-              <Image
-                source={require('C:\\Users\\hammad\\Desktop\\ReactNative\\practice\\adazakat\\Src\\Assets\\notification.png')}
-                style={{
-                  width: 20,
-                  height: 20,
-                  tintColor: focused ? 'white' : 'gray',
-                }}
-              />
-            )}}   name="Saved" component={Saved} />
+              <Entypo name='heart' color={focused ? 'white' : 'gray'} size={responsiveWidth(6)} />            
+            )}}
+            name="Saved"
+            component={Saved} />
       <Tab.Screen options={{
             // gestureEnabled:true,
             // animationTypeForReplace:'pop',
-            headerTitle:'Profile',
+            headerTitle:'Settings',
             tabBarActiveTintColor: 'white',
             tabBarIcon: ({focused}) => (
-              <Image
-                source={require('C:\\Users\\hammad\\Desktop\\ReactNative\\practice\\adazakat\\Src\\Assets\\logo.png')}
-                style={{
-                  width: 20,
-                  height: 20,
-                  tintColor: focused ? 'white' : 'gray',
-                }}
-              />
-            )}}  name="Profile" component={Profile} />
+              <IonIcons name='settings-sharp' color={focused ? 'white' : 'gray'} size={responsiveWidth(6)}/>
+            )}}  name="Setting" component={Profile} />
     </Tab.Navigator>
   )
 }

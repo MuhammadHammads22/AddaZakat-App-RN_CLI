@@ -45,77 +45,77 @@ const Login = ({ navigation }) => {
         routes: [{ name: 'HomeGraph' }],
       })
     );
-//     await login({ email: loginState.email, password: loginState.password }).then(data => {
-//       // console.log('responsedata',data)
-//       if (data?.error) {
-//         if (data.error.data) {
-//           const { errors } = data.error.data
-//           // console.log(errors.non_field_errors)
-//           if (errors.non_field_errors[0] === "You are not Register User") {
-//             // console.log("register before login")
-//             setIsErrorServer(true)
-//             setErrorServer("Wrong Email & Password.")
-//             // setServerResponse(state=>{return{...state,error:"This email is not registered. Register first",isError:true}})
-//           }
-//           if (errors.non_field_errors[0] === "User is not verified. Please check your email for verification link/code.") {
-//             // console.log("verify email plz..")
-//             setIsErrorServer(true)
-//             setErrorServer("Verify email before Loging In.")
-//           }
-//         }
+    await login({ email: loginState.email, password: loginState.password }).then(data => {
+      console.log('responsedata',data)
+      if (data?.error) {
+        if (data.error.data) {
+          const { errors } = data.error.data
+          // console.log(errors.non_field_errors)
+          if (errors.non_field_errors[0] === "You are not Register User") {
+            // console.log("register before login")
+            setIsErrorServer(true)
+            setErrorServer("Wrong Email & Password.")
+            // setServerResponse(state=>{return{...state,error:"This email is not registered. Register first",isError:true}})
+          }
+          if (errors.non_field_errors[0] === "User is not verified. Please check your email for verification link/code.") {
+            // console.log("verify email plz..")
+            setIsErrorServer(true)
+            setErrorServer("Verify email before Loging In.")
+          }
+        }
 
-//       } else {
-//         const { data: { token: { access, refresh }
-//           } 
-//       } = data;
+      } else {
+        const { data: { token: { access, refresh }
+          } 
+      } = data;
 
-//       const { data: {
-//           data: { username, full_name, date_of_birth, religion, gender, email }
-//           } 
-//       } = data;
-// // setting user credential on login to temporary state
-//       dispatch(setUserInfo({
-//         userName: username,
-//         fullName: full_name,
-//         dateOfBirth: date_of_birth,
-//         religion: religion,
-//         gender: gender,
-//         email: email,
-//         accessToken: access,
-//         refreshToken:refresh
-//     }))
-//     // setting user credential on login to local storage
-//     setUserData( JSON.stringify({
-//       userName: username,
-//       fullName: full_name,
-//       dateOfBirth: date_of_birth,
-//       religion: religion,
-//       gender: gender,
-//       email: email,
-//       accessToken: access,
-//       refreshToken:refresh
-//   }))
+      const { data: {
+          data: { username, full_name, date_of_birth, religion, gender, email }
+          } 
+      } = data;
+// setting user credential on login to temporary state
+      dispatch(setUserInfo({
+        userName: username,
+        fullName: full_name,
+        dateOfBirth: date_of_birth,
+        religion: religion,
+        gender: gender,
+        email: email,
+        accessToken: access,
+        refreshToken:refresh
+    }))
+    // setting user credential on login to local storage
+    setUserData( JSON.stringify({
+      userName: username,
+      fullName: full_name,
+      dateOfBirth: date_of_birth,
+      religion: religion,
+      gender: gender,
+      email: email,
+      accessToken: access,
+      refreshToken:refresh
+  }))
 
     
-//         if (access && refresh) {
+        if (access && refresh) {
           
-//           console.warn("Login Successfull")
-//           // console.log('userstatefrom login screen',userState)
+          console.warn("Login Successfull")
+          // console.log('userstatefrom login screen',userState)
 
-//           navigation.dispatch(
-//             CommonActions.reset({
-//               index: 0,
-//               routes: [{ name: 'HomeGraph' }],
-//             })
-//           );
-//           // dispatch(setLoginToInitialState())
-//         } else {
-//           console.log('One or both tokens are missing.');
-//         }
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'HomeGraph' }],
+            })
+          );
+          // dispatch(setLoginToInitialState())
+        } else {
+          console.log('One or both tokens are missing.');
+        }
 
-//       }
-//     }
-//     ).catch((error) => { console.log(error) });
+      }
+    }
+    ).catch((error) => { console.log(error) });
 
   }
   return (

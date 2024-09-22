@@ -6,7 +6,7 @@ import 'react-native-gesture-handler'
  *
  * @format
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet,} from 'react-native';
 import SplashScreen from 'react-native-splash-screen'
 import { NavigationContainer } from '@react-navigation/native';
@@ -27,19 +27,19 @@ import { getAccessToken, getUserData } from './Src/store/localStore';
 import { setUserInfo } from './Src/Slices/UserSlice';
 import CreatePostScreen from './Src/Screens/CreatePostScreen';
 import DetailedPostScreen from './Src/Screens/DetailedPostScreen';
+// import { useColorScheme } from 'react-native-appearance';
 // import { PersistGate } from 'redux-persist/integration/react';
 
 function App(){
 
+  // const colorScheme = useColorScheme(); // Gets the system theme
+
+  // const isDarkTheme = colorScheme === 'dark';
+
+
 const [initialRoute,setInitialRoute]=useState("")
 const Stack = createNativeStackNavigator();
-useEffect(()=>{
-  let b=5
-  let a=b
-  b=4
-  console.log(a)
-
-  
+useLayoutEffect(()=>{  
   async function getToken(){
     try{
     var data= await getUserData() 

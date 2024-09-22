@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React from 'react'
 import LinearGradient from 'react-native-linear-gradient'
@@ -27,26 +27,39 @@ async function Logout(navigation,dispatch){
 
 
 const Profile = ({navigation}) => {
+
   const dispatch= useDispatch()
+
+  const settings=[{name:'update profile',subSettings:[]},{name:'update user',subSettings:[]},{name:'logout',subSettings:[]}]
+  
+  const handleClick=(action)=>{
+    switch(action){
+      case 'update profile':
+        break;
+      case 'update user':
+        break
+      case 'logout':
+        Logout(navigation,dispatch)
+        break;
+      default:
+        break;
+    }
+  }
   return (
-    <SafeAreaView>
-    <TouchableOpacity onPress={()=>{Logout(navigation,dispatch)}} >
-                <LinearGradient
-                  onPress={() => { null }}
-                  colors={['#42a1f5', '#03bafc', '#42c5f5']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={{
-                    borderRadius: 100,
-                    width: responsiveWidth(60),
-                    alignSelf: 'center',
-                    alignItems: 'center',
-                    paddingVertical: responsiveHeight(1),
-                    
-                  }}>
-                  <Text style={{ color: 'white', fontSize: 19 }}>LOGIN</Text>
-                </LinearGradient>
-              </TouchableOpacity> 
+    <SafeAreaView style={{flex:1}}>
+      <ScrollView style={{flex:1,marginTop:responsiveHeight(1)}}>
+      {
+        settings.map((item,index)=>(
+          <TouchableOpacity key={index} onPress={()=>handleClick(item.name)}>
+          <View  style={{alignItems:'center',margin:responsiveWidth(1),padding:responsiveHeight(2),borderBottomColor:'gray',borderBottomWidth:responsiveWidth(.5)}}>
+            <Text style={{textAlign:'center',color:'black',fontSize:responsiveWidth(4)}}>{item.name}</Text>
+          </View>
+          </TouchableOpacity>
+        ))
+      }
+      </ScrollView>
+     {/* onPress={()=>{Logout(navigation,dispatch)}}  */}
+               
             
     </SafeAreaView>
   )
