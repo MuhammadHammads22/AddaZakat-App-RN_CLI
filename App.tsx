@@ -84,7 +84,7 @@ function MyStack() {
       <Stack.Screen name="HomeGraph" component={HomeGraph} />
       <Stack.Screen name="CommentsScreen" component={CommentScreen} options={{presentation:'modal',headerShown:true}} />
       <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} options={{presentation:'modal'}}/>
-      <Stack.Screen name="DetailedPostScreen" component={DetailedPostScreen} options={{presentation:'modal'}}/>
+      <Stack.Screen name="DetailedPostScreen" component={DetailedPostScreen} options={{headerShown:false}}/>
     </Stack.Navigator>)
 }
 }

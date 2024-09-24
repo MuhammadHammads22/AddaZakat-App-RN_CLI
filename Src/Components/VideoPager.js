@@ -9,7 +9,7 @@ const VideoPager = (params) => {
         <View>
             {params.data.item.url ?
             <View>
-                <View style={{ width: responsiveWidth(100), height: responsiveHeight(40), backgroundColor: 'black' }}>
+                <View style={{ width: responsiveWidth(100), height: responsiveHeight(40) }}>
                     <Video
                         source={{ uri: params.data.item.url }} // Can be a URL or a local file.
                         style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
@@ -19,9 +19,9 @@ const VideoPager = (params) => {
                         onError={(error) => console.log('Video Error:', error)} // Callback when video cannot be loaded
                     />
                 </View>
-                <View style={styles.tagContainer}>
+                {/* <View style={styles.tagContainer}>
                   <Text style={styles.tagText}>{params.data.item.title}</Text>
-                </View>
+                </View> */}
                 </View>
                 :
                 <View>
@@ -29,9 +29,9 @@ const VideoPager = (params) => {
                         <Text style={{ textAlign: 'center' }}>Video Not Present</Text>
                     </View>
                     {/* Tag */}
-                    <View style={styles.tagContainer}>
+                    {/* <View style={styles.tagContainer}>
                         <Text style={styles.tagText}>{params.data.item.title}</Text>
-                    </View>
+                    </View> */}
                 </View>
             }
         </View>
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff', // Background color for the tag
       paddingVertical: 10,     // Padding around the text
       paddingHorizontal: 20,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
+      shadowColor: 'black',
+      shadowOffset: { width: 10, height: 10 },
       shadowOpacity: 0.8,
       shadowRadius: 3,
       elevation: 5,            // Shadow for Android

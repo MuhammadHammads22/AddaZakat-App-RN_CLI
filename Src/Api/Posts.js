@@ -10,14 +10,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const postApis = createApi({
   reducerPath: 'postApis',
   baseQuery: fetchBaseQuery({ 
-    baseUrl: 'http://api.addazakat.com//post/'   
+    baseUrl: 'https://api.addazakat.com/post'   
   }),
   
   endpoints: (builder) => ({
     
     getPostList: builder.query({
       query: ({token}) =>({ 
-      url: 'list/',
+      url: '/get-posts',
       headers: {
         'Authorization': `Bearer ${token}`,
       }
@@ -27,9 +27,9 @@ export const postApis = createApi({
     getPostHistory: builder.query({
       query: ({token}) => {
         return {
-          url: 'history/',
+          url: '/history',
           method: 'GET',
-          header:{
+          headers:{
             'Authorization': `Bearer ${token}`,
           }
         }
@@ -39,9 +39,9 @@ export const postApis = createApi({
     getPostSatisfied: builder.query({
       query: ({token}) => {
         return {
-          url: 'satisfied/',
+          url: '/satisfied',
           method: 'GET',
-          header:{
+          headers:{
             'Authorization': `Bearer ${token}`,
           }
         }
@@ -51,9 +51,9 @@ export const postApis = createApi({
     getPostDocFiles: builder.query({
       query: ({slug,token}) => {
         return {
-          url: `get-post-doc-files/${slug}`,
+          url: `/get-post-doc-files/${slug}`,
           method: 'GET',
-          header:{
+          headers:{
             'Authorization': `Bearer ${token}`,
           }
         }
@@ -63,9 +63,9 @@ export const postApis = createApi({
     getPostSaves: builder.query({
       query: ({token}) => {
         return {
-          url: 'showSave/',
+          url: '/showSave',
           method: 'GET',
-          header:{
+          headers:{
             'Authorization': `Bearer ${token}`,
           }
           
@@ -75,11 +75,12 @@ export const postApis = createApi({
 
     getPostDetail: builder.query({
       query: ({slug,token}) => {
+        // console.log("token:"+token,"slug:"+slug)
         return {
-          url: `detail/${slug}`,
+          url: `/detail-post/${slug}`,
           method: 'GET',
-          header:{
-            'Authorization': `Bearer ${token}`,
+          headers:{
+            'Authorization': `Bearer ${token}`
           }
         }
       },
@@ -168,14 +169,15 @@ export const postApis = createApi({
       },
     }),
     getComments: builder.query({
-      query: ({slug,token}) => ({
-        // console.log("accesstoken:"+token,"\nslug:"+slug)
-          url:`GetComments/${slug}`,
+      query: ({slug,token}) => {
+        console.log("accesstoken:"+token,"\nslug: "+slug)
+        return{
+          url:`/get-post-comments/${slug}`,
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`
           }
-        })
+        }}
     }),
 
     search: builder.query({

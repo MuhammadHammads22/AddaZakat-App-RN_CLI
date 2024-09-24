@@ -1,5 +1,5 @@
 import { View, Text, Button, TextInput, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useCommentMutation, useGetCommentsQuery } from '../Api/Posts';
 import { useRoute } from '@react-navigation/native';

@@ -37,14 +37,20 @@ const Login = ({ navigation }) => {
 
 
   // api
-  const [login, { data, isLoading, error }] = useLoginMutation();
+  const [login, { data, error, isLoading }] = useLoginMutation();
   const loginfunc = async () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'HomeGraph' }],
-      })
-    );
+  //   const login=(()=>{
+  //     fetch(`https://api.addazakat.com/post/detail-post/${slug}`,{method:'GET',
+  //         headers:{
+  //             'Authorization': `Bearer ${token}`
+  //           }
+  //       }).then((res)=>{
+  //           console.log(res.data.json)
+  //       }
+  //       )
+  // })()
+  
+    
     await login({ email: loginState.email, password: loginState.password }).then(data => {
       console.log('responsedata',data)
       if (data?.error) {
@@ -70,7 +76,7 @@ const Login = ({ navigation }) => {
       } = data;
 
       const { data: {
-          data: { username, full_name, date_of_birth, religion, gender, email }
+          user: { username, full_name, date_of_birth, religion, gender, email }
           } 
       } = data;
 // setting user credential on login to temporary state
