@@ -89,7 +89,7 @@ export const postApis = createApi({
     createPost: builder.mutation({
       query: ({data,token}) => {
         return {
-          url: 'create/',
+          url: '/create/',
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -105,7 +105,7 @@ export const postApis = createApi({
       query: ({formData,token}) => {
         console.log('***** formData', formData)
         return {
-          url: 'upload-file/',
+          url: '/upload-file/',
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -120,7 +120,7 @@ export const postApis = createApi({
       query: ({slug,token}) => {
         console.log("token:"+token,"slug:"+slug)
         return {
-          url: `upvote/${slug}/`,
+          url: `/upvote-post/${slug}/`,
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -133,7 +133,7 @@ export const postApis = createApi({
     downvote : builder.mutation({
       query: ({slug,token}) => {
         return {
-          url: `downvote/${slug}/`,
+          url: `/downvote-post/${slug}`,
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -144,12 +144,13 @@ export const postApis = createApi({
     }),
 
     save : builder.mutation({
-      query: (slug) => {
+      query: ({slug,token}) => {
+        console.log("token:"+token,"slug:"+slug)
         return {
-          url: `save/${slug}/`,
-          method: 'POST',
+          url: `/save-post/${slug}/`,
+          method:'POST',
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
           },
         }
@@ -195,12 +196,12 @@ export const postApis = createApi({
 
 
     report : builder.mutation({
-      query: (data) => {
+      query: ({data,token}) => {
         return {
-          url: 'report/',
+          url: '/report-post/',
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            'Authorization': `Bearer ${token}`,
           },
           body: data
         }
@@ -210,7 +211,7 @@ export const postApis = createApi({
     donate : builder.mutation({
       query: (data) => {
         return {
-          url: 'donate/',
+          url: '/donate-post/',
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${accessToken}`,

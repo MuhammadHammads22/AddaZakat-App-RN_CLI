@@ -62,44 +62,17 @@ const PostCard = (post) => {
         setUpvotes(upvote - 1)
         setIsUpvoted(false)
       };
-      downvoteMutation({ slug: post.postData.item.slug, token: userState.accessToken })
+      downvoteMutation({ slug: post.postData.item.slug, token: userState.accessToken }).then((data) => console.log(data))
     } else {
       setDownvote(downvote - 1)
       setIsDownvoted(false)
-      downvoteMutation({ slug: post.postData.item.slug, token: userState.accessToken })
+      downvoteMutation({ slug: post.postData.item.slug, token: userState.accessToken }).then((data) => console.log(data))
     }
   }
 
   const handleCommentClick = () => {
     post.navigation.navigate('CommentsScreen', { slug: post.postData.item.slug })
   };
-
-  //   {
-  //     "id": 21,
-  //     "upvote_count": 0,
-  //     "downvote_count": 0,
-  //     "donors_count": 0,
-  //     "report_count": 0,
-  //     "comment_count": 0,
-  //     "is_upvoted": false,
-  //     "is_downvoted": false,
-  //     "slug": "gguzcb3vayymyz2nzviq4u5afuytuc",
-  //     "post_type": "masjid",
-  //     "need": "donation",
-  //     "seeker": "Zafar Iqbal",
-  //     "description": "Zafar, a young man, is looking for help to buy books and supplies to continue his education, as his family is unable to afford them.",
-  //     "address": "Mohallah Raza, Qambar, Sindh",
-  //     "verified": 0,
-  //     "paid": 0,
-  //     "needed_money": 3423423,
-  //     "satisfied": false,
-  //     "created": "2024-09-21T16:27:10.471556+05:00",
-  //     "updated": "2024-09-21T16:27:53.231606+05:00",
-  //     "for_staff": true,
-  //     "creator": "abuubaida01"
-  // }
-
-
 
   return (
     <TouchableOpacity onPress={() => { post.navigation.navigate('DetailedPostScreen', { data: post.postData.item }) }}>

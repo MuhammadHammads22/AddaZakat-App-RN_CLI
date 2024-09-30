@@ -51,7 +51,7 @@ const Login = ({ navigation }) => {
   // })()
   
     
-    await login({ email: loginState.email, password: loginState.password }).then(data => {
+    login({ email: loginState.email, password: loginState.password }).then(data => {
       console.log('responsedata',data)
       if (data?.error) {
         if (data.error.data) {

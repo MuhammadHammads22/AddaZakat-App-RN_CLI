@@ -6,31 +6,60 @@ import VideoPager from '../Components/VideoPager'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import Feather from 'react-native-vector-icons/Feather'
-import { useDownvoteMutation, useGetCommentsQuery, useGetPostDetailQuery, useUpvoteMutation } from '../Api/Posts'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { useDownvoteMutation, useGetCommentsQuery, useGetPostDetailQuery, useSaveMutation, useUpvoteMutation } from '../Api/Posts'
 import { useSelector } from 'react-redux'
 import DetailPostShimmer from '../Components/DetailPostShimmer'
+import DonateModal from '../Components/DonateModal'
+import ReportModal from '../Components/ReportModal'
 
+
+
+  
 const DetailedPostScreen = () => {
 
     const userState = useSelector((state) => state.userInfo.userInfo)
     const params=useRoute().params.data
     const slug = params.slug
     const token = userState.accessToken
-    // console.log({slug,token})
+   
+    // console.log({slug})
     const { data, error, isLoading } = useGetPostDetailQuery({ slug, token })
-    // isLoading ? console.log('waiting') : console.log(data)
-    
+    isLoading ? console.log('waiting') : console.log(data)
+    // console.log(data)
+
     const {data:dataComment,errorComment,isLoadingComment} = useGetCommentsQuery({slug,token})
-    console.log(dataComment)
     const [upvote, setUpvotes] = useState(params.upvote_count)
     const [downvote, setDownvote] = useState(params.downvote_count)
     const [isUpvoted, setIsUpvoted] = useState(params.is_upvoted);
     const [isDownvoted, setIsDownvoted] = useState(params.is_downvoted);
-  
+    const [isSaved, setIsSaved] = useState(false);
+    const [isReport, setIsReport] = useState(false);
+    const [isDonate, setIsDonate] = useState(false);
+
+
+
     const [upvoteMutation] = useUpvoteMutation()
     const [downvoteMutation] = useDownvoteMutation()
-  
+    const [ saveMutation ] = useSaveMutation()
+
+    const handleSave = (event) =>{
+        if (!isSaved) {
+          setIsSaved(true)
+          saveMutation({slug,token}).then(data=>console.log(data))
+        }else{
+          setIsSaved(false)
+          saveMutation({slug,token}).then(data=>console.log(data))
+        }
+    }
+    const handleReport=()=>{
+        setIsReport(true)
+    }
+    const handleDonate=()=>{
+        setIsDonate(true)
+    }
+
+
     const handleUpvote = (event) => {
       // console.log(event.timestamp).type.target.
       event.stopPropagation();
@@ -59,16 +88,14 @@ const DetailedPostScreen = () => {
           setUpvotes(upvote - 1)
           setIsUpvoted(false)
         };
-        downvoteMutation({ slug, token })
+        downvoteMutation({ slug, token }).then((data) => console.log(data))
       } else {
         setDownvote(downvote - 1)
         setIsDownvoted(false)
-        downvoteMutation({ slug, token })
+        downvoteMutation({ slug, token }).then((data) => console.log(data))
       }
     }
    
-
-    const commentData = [{ name: 'demo', comment: 'nice', timeStamp: '2 minutes ago' }, { name: 'faraz', comment: 'hahaha', timeStamp: '20 minutes ago' }]
 
     const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -134,6 +161,8 @@ const DetailedPostScreen = () => {
             <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
                 <KeyboardAvoidingView >
                     <ScrollView showsVerticalScrollIndicator={false} >
+                        <DonateModal isDonate={isDonate} setIsDonate={setIsDonate} slug={slug} token={token} />
+                        <ReportModal isReport={isReport} setIsReport={setIsReport} />
                         <View style={{ width: responsiveWidth(100), height: responsiveHeight(42) }}>
                             <Animated.View style={{
                                 opacity: leftButtonOpacity, width: 30,
@@ -200,9 +229,9 @@ const DetailedPostScreen = () => {
                                     const newIndex = Math.round(contentOffsetX / windowWidth);
                                     setIndex(newIndex);
                                 }}
-                                renderItem={(item,index) => {
+                                renderItem={(item) => {
                                     return (
-                                        <VideoPager data={item} key={index} paused={index} />
+                                        <VideoPager data={item} key={item.index} paused={index} />
                                     )
                                 }
                                 }
@@ -212,8 +241,8 @@ const DetailedPostScreen = () => {
                             {/* title */}
                             <View style={{ alignItems: 'center', flexDirection: 'row', marginHorizontal: responsiveWidth(1), justifyContent: 'space-between', padding: responsiveWidth(2.5) }}>
                                 <Text style={{ fontSize: responsiveWidth(5), fontWeight: "500", color: "#454D65" }}>{data.creator}</Text>
-                                <TouchableOpacity onPress={null}>
-                                    <Feather name="bookmark" size={responsiveWidth(7.5)} color="gray" />
+                                <TouchableOpacity onPress={handleSave}>
+                                    <Ionicons name={isSaved?'bookmark':'bookmark-outline'} color={'black'} size={responsiveWidth(7.5)} /> 
                                 </TouchableOpacity>
                             </View>
                             {/* title and voting row */}
@@ -221,24 +250,25 @@ const DetailedPostScreen = () => {
                                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row' }}>
                                     <TouchableOpacity onPress={handleUpvote}>
                                         <View style={styles.commentSectionIconContainer}>
-                                            <MaterialCommunityIcons style={{ padding: responsiveWidth(.5) }} name="arrow-up-bold-outline" size={responsiveWidth(6)} color="gray" />
+                                            <MaterialCommunityIcons style={{ padding: responsiveWidth(.5) }} name={isUpvoted?"arrow-up-bold":"arrow-up-bold-outline"} size={responsiveWidth(6)} color="black" />
                                             <Text style={styles.commentSectionIconSupportingText}>{upvote}</Text>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={handleDownvote}>
                                         <View style={styles.commentSectionIconContainer}>
-                                            <MaterialCommunityIcons style={{ padding: responsiveWidth(1) }} name="arrow-down-bold-outline" size={responsiveWidth(6)} color="gray" />
+                                            <MaterialCommunityIcons style={{ padding: responsiveWidth(1) }} name={isDownvoted?"arrow-down-bold":"arrow-down-bold-outline"}  size={responsiveWidth(6)} color="black" />
                                             <Text style={styles.commentSectionIconSupportingText}>{downvote}</Text>
                                         </View>
                                     </TouchableOpacity>
-
                                 </View>
                                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', margin: responsiveWidth(1), justifyContent: 'space-around' }}>
-                                    <TouchableOpacity style={{ justifyContent: 'center', backgroundColor: '#22C55E', borderRadius: responsiveWidth(4), width: responsiveWidth(15), height: responsiveHeight(6) }}>
+                                    <TouchableOpacity onPress={handleDonate} style={[styles.commentSectionIconContainer,{backgroundColor: '#22C55E'}]}>
                                         <Text style={{ textAlign: 'center', color: 'white' }}>Donate</Text>
+                                        <Text style={[styles.commentSectionIconSupportingText,{color:'white'}]}>{data.donors_count}</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{ justifyContent: 'center', backgroundColor: '#14B8A6', borderRadius: responsiveWidth(4), width: responsiveWidth(15), height: responsiveHeight(6) }}>
+                                    <TouchableOpacity onPress={handleReport} style={[styles.commentSectionIconContainer,{backgroundColor: '#14B8A6'}]}>
                                         <Text style={{ textAlign: 'center', color: 'white' }}>Report</Text>
+                                        <Text style={[styles.commentSectionIconSupportingText,{color:'white'}]}>{data.report_count}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -286,9 +316,9 @@ const DetailedPostScreen = () => {
                                 </View>
                                 <View style={{ padding: responsiveWidth(1) }}>
                                     {
-                                        dataComment.map((item, index) => {
+                                        dataComment?.map((item, index) => {
                                             return (
-                                                <View style={{ flexDirection: 'row', alignItems: 'center', padding: responsiveWidth(1), marginBottom: responsiveHeight(1) }}>
+                                                <View key={index} style={{ flexDirection: 'row', alignItems: 'center', padding: responsiveWidth(1), marginBottom: responsiveHeight(1) }}>
                                                     <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' }}>
                                                         <Text style={{ fontWeight: 'bold', fontSize: responsiveWidth(5), color: 'black', backgroundColor: 'white', marginBottom: responsiveWidth(1) }}>{item.user}</Text>
                                                         <Text style={{ fontWeight: 'heavy', fontSize: responsiveWidth(5), color: 'black', backgroundColor: 'white', marginBottom: responsiveWidth(1) }}>{item.body}</Text>

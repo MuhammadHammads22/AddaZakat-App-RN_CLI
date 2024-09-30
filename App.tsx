@@ -29,13 +29,14 @@ import CreatePostScreen from './Src/Screens/CreatePostScreen';
 import DetailedPostScreen from './Src/Screens/DetailedPostScreen';
 // import { useColorScheme } from 'react-native-appearance';
 // import { PersistGate } from 'redux-persist/integration/react';
+import { QueryClient,QueryClientProvider } from '@tanstack/react-query';
 
 function App(){
 
   // const colorScheme = useColorScheme(); // Gets the system theme
 
   // const isDarkTheme = colorScheme === 'dark';
-
+const queryClient= new QueryClient()
 
 const [initialRoute,setInitialRoute]=useState("")
 const Stack = createNativeStackNavigator();
@@ -69,9 +70,9 @@ function MyStack() {
     <Stack.Screen name="Signup" component={SignUpForm} options={{}} />
     <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} options={{}} />
     <Stack.Screen name="HomeGraph" component={HomeGraph} />
-    <Stack.Screen name="CommentsScreen" component={CommentScreen} options={{presentation:'modal',headerShown:true}} />
-    <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} options={{presentation:'modal'}} />
-    <Stack.Screen name="DetailedPostScreen" component={DetailedPostScreen} options={{headerShown:true,title:'Details'}}/>
+    <Stack.Screen name="CommentsScreen" component={CommentScreen}/>
+    <Stack.Screen name="CreatePostScreen" component={CreatePostScreen}/>
+    <Stack.Screen name="DetailedPostScreen" component={DetailedPostScreen} />
   </Stack.Navigator>)
 }else{
   return(
@@ -82,9 +83,9 @@ function MyStack() {
       <Stack.Screen name="Signup" component={SignUpForm} options={{}} />
       <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} options={{}} />
       <Stack.Screen name="HomeGraph" component={HomeGraph} />
-      <Stack.Screen name="CommentsScreen" component={CommentScreen} options={{presentation:'modal',headerShown:true}} />
-      <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} options={{presentation:'modal'}}/>
-      <Stack.Screen name="DetailedPostScreen" component={DetailedPostScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="CommentsScreen" component={CommentScreen}  />
+      <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} />
+      <Stack.Screen name="DetailedPostScreen" component={DetailedPostScreen} />
     </Stack.Navigator>)
 }
 }
@@ -96,9 +97,11 @@ function MyStack() {
 return(
       <NavigationContainer>
         <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
           {/* <PersistGate loading={false} persistor={persistor}> */}
           <MyStack/>
           {/* <MyDrawer/> */}
+          </QueryClientProvider>
         </Provider>
       </NavigationContainer>
 )
