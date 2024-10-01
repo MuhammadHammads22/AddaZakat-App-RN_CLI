@@ -16,6 +16,7 @@ import { setUserInfo } from '../Slices/UserSlice'
 import PostCard from '../Components/PostCard'
 import PostShimmer from '../Components/PostShimmer'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import tailwind from 'tailwind-rn';
 
 
 
@@ -32,46 +33,44 @@ const Home = ({ navigation }) => {
 
   const scrollY = useRef(new Animated.Value(0)).current;
   const lastScrollY = useRef(0);
-  const [isSearchBarVisible, setSearchBarVisible] = useState(true);
+  const direction = useRef('up'); // Track scroll direction
+  
+  // Smoothly hide and show the search bar based on scroll position
+  const translateY = scrollY.interpolate({
+    inputRange: [0, 100], // Adjust this range to control the speed of the hide/show effect
+    outputRange: [0, -responsiveHeight(9)], // Adjust -100 based on the height of your search bar
+    extrapolate: 'clamp',
+  });
 
-  // Define the translateY interpolation based on visibility state
-  const translateY = isSearchBarVisible
-    ? scrollY.interpolate({
-        inputRange: [0, 50], 
-        outputRange: [0, 0], // Show bar (remain at 0 position)
-        extrapolate: 'clamp',
-      })
-    : scrollY.interpolate({
-        inputRange: [0, 50], 
-        outputRange: [0, -100], // Hide bar (move off-screen)
-        extrapolate: 'clamp',
-      });
-
-  // Handle the onScroll event
-  const handleScroll = Animated.event(
-    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-    {
-      useNativeDriver: false,
-      listener: (event) => {
-        const currentScrollY = event.nativeEvent.contentOffset.y;
-
-        // Detect scroll direction and toggle search bar visibility
-        if (currentScrollY > lastScrollY.current + 10) {
-          // Scrolling down (hide bar)
-          if (isSearchBarVisible) {
-            setSearchBarVisible(false);
-          }
-        } else if (currentScrollY < lastScrollY.current - 10) {
-          // Scrolling up (show bar)
-          if (!isSearchBarVisible) {
-            setSearchBarVisible(true);
-          }
-        }
-
-        lastScrollY.current = currentScrollY;
-      },
+  // Handle the scroll event
+  const handleScroll = (event) => {
+    const currentScrollY = event.nativeEvent.contentOffset.y;
+    
+    // Determine the scroll direction
+    if (currentScrollY > lastScrollY.current) {
+      // Scrolling down
+      if (direction.current !== 'down') {
+        direction.current = 'down';
+        Animated.timing(scrollY, {
+          toValue: 100, // Hide the search bar
+          duration: 350,
+          useNativeDriver: true,
+        }).start();
+      }
+    } else if (currentScrollY < lastScrollY.current) {
+      // Scrolling up
+      if (direction.current !== 'up') {
+        direction.current = 'up';
+        Animated.timing(scrollY, {
+          toValue: 0, // Show the search bar
+          duration: 350,
+          useNativeDriver: true,
+        }).start();
+      }
     }
-  );
+
+    lastScrollY.current = currentScrollY;
+  };
   // const { data, error, isLoading } = useGetPostListQuery({ token: userState.accessToken });
   // isLoading?console.log('waiting'):console.log(data.results)
   const fetchPosts = async ({ pageParam = 1 }) => {
@@ -128,7 +127,7 @@ const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
 
-      <Animated.View style={{ transform:[{translateY}],zIndex:1,position:'absolute',top:0,left:0,right:0,flexDirection: 'row', margin: responsiveWidth(2), alignItems: 'center',paddingVertical:responsiveWidth(2) }}>
+      <Animated.View style={{ transform:[{translateY}],zIndex:1,position:'absolute',top:0,left:0,right:0,flexDirection: 'row', alignItems: 'center',padding:responsiveWidth(2),paddingVertical:responsiveWidth(2) ,backgroundColor:'white'}}>
         <View style={{ width: responsiveWidth(10), height: responsiveWidth(10), borderRadius: responsiveWidth(5), marginRight: responsiveWidth(3), backgroundColor: 'gray' }}></View>
         <TouchableOpacity onPress={() => navigation.navigate('CreatePostScreen')}>
           <Text style={{ backgroundColor: '#F0F2F5', fontSize: responsiveWidth(5), padding: responsiveWidth(2), width: responsiveWidth(70), borderRadius: responsiveWidth(10), paddingHorizontal: responsiveWidth(5), marginRight: responsiveWidth(3) }}>Share your hardships...</Text>
@@ -152,7 +151,7 @@ const Home = ({ navigation }) => {
             }}
             showsVerticalScrollIndicator={false}
             onScroll={handleScroll} // Bind the scroll event to Animated.event
-            scrollEventThrottle={16} // Throttle scroll events to improve performance
+            scrollEventThrottle={10} // Throttle scroll events to improve performance
           ></FlatList>
         )
       })
@@ -192,7 +191,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EBECF4"
   },
   feed: {
-
+    paddingTop:responsiveHeight(9)
   }
 });
 

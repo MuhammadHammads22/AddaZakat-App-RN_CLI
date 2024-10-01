@@ -139,9 +139,9 @@ const DetailedPostScreen = () => {
             setIndex(index - 1)
         }
     }
-    // useEffect(() => {
-    //     ref.current.scrollToIndex({ index: index, animated: true })
-    // }, [index])
+    useEffect(() => {
+        ref.current.scrollToIndex({ index: index, animated: true })
+    }, [index])
 
 
 
