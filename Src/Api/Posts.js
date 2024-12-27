@@ -88,12 +88,13 @@ export const postApis = createApi({
 
     createPost: builder.mutation({
       query: ({data,token}) => {
+        console.log(data,token)
         return {
-          url: '/create/',
+          url: '/create-post/',
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
           body: data
         }
@@ -145,7 +146,7 @@ export const postApis = createApi({
 
     save : builder.mutation({
       query: ({slug,token}) => {
-        console.log("token:"+token,"slug:"+slug)
+        // console.log("token:"+token,"slug:"+slug)
         return {
           url: `/save-post/${slug}/`,
           method:'POST',
@@ -158,20 +159,20 @@ export const postApis = createApi({
     }),
 
     comment : builder.mutation({
-      query: ({slug,comment,token}) => {
+      query: ({formData,token}) => {
         return {
-          url: 'PostCommenta/',
+          url: '/create-comment/',
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
-          body: {slug:slug,body:comment}
+          body: formData
         }
       },
     }),
     getComments: builder.query({
       query: ({slug,token}) => {
-        console.log("accesstoken:"+token,"\nslug: "+slug)
+        // console.log("accesstoken:"+token,"\nslug: "+slug)
         return{
           url:`/get-post-comments/${slug}`,
           method: 'GET',
@@ -196,27 +197,28 @@ export const postApis = createApi({
 
 
     report : builder.mutation({
-      query: ({data,token}) => {
+      query: ({formData,token}) => {
         return {
           url: '/report-post/',
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
-          body: data
+          body: formData
         }
       },
     }),
 
     donate : builder.mutation({
-      query: (data) => {
+      query: ({formData,token}) => {
+        // console.log('api:'+token+formData)
         return {
           url: '/donate-post/',
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            'Authorization': `Bearer ${token}`,
           },
-          body: data
+          body: formData
         }
       },
     }),

@@ -8,8 +8,7 @@ const ReportModal = ({ isReport, setIsReport,slug,token }) => {
 
 
 
-    const [selectedBtn,setSelectedBtn]=useState('')
-    
+    const [selectedBtn,setSelectedBtn]=useState()
 
     const data = [
         { label: 'Fake in nature 1' },
@@ -20,20 +19,19 @@ const ReportModal = ({ isReport, setIsReport,slug,token }) => {
     ];
 
     const [reportMutation] = useReportMutation();
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false); // State for showing success message
-  
+    
 
   
-    const handleSubmitReport = async (event, closePopup) => {
-      event.preventDefault();
+    const handleSubmitReport = async (event) => {
+    //   event.preventDefault();
       const formData = new FormData();
       formData.append("slug", slug);
       formData.append('report', selectedBtn);
-    
+    console.log(formData)
   
       try {
-        reportMutation({formData,token}).then(data=>{
-        console.log(data);
+        reportMutation({formData,token}).then(resData=>{
+        console.log(resData);
         setSelectedBtn(''); // Reset selected option
         // setShowSuccessMessage(true); // Show success message
         setIsReport(false)// Close the popup after submission
@@ -47,7 +45,7 @@ const ReportModal = ({ isReport, setIsReport,slug,token }) => {
   
        
       } catch (error) {
-        console.error("Error:", error);
+        console.log("Error:", error);
       }
     };
 
@@ -79,8 +77,8 @@ const ReportModal = ({ isReport, setIsReport,slug,token }) => {
                                     style={{ backgroundColor: '#4B5563', padding: responsiveWidth(2.2), margin: responsiveWidth(2), borderRadius: responsiveWidth(3) }}>
                                     <Text style={{ color: 'white', fontSize: responsiveHeight(2), fontWeight: 'bold' }}>Close</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => {handleSubmitReport }}
-                                    style={{ backgroundColor: '#03bafc', padding: responsiveWidth(2.2), margin: responsiveWidth(2), borderRadius: responsiveWidth(3) }}>
+                                <TouchableOpacity disabled={selectedBtn?false:true} onPress={() => {handleSubmitReport() }}
+                                    style={{ backgroundColor:selectedBtn? '#03bafc':'gray', padding: responsiveWidth(2.2), margin: responsiveWidth(2), borderRadius: responsiveWidth(3) }}>
                                     <Text style={{ fontSize: responsiveHeight(2), fontWeight: 'bold', color: 'white' }}>Submit</Text>
                                 </TouchableOpacity>
                             </View>

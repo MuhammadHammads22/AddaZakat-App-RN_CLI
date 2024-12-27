@@ -7,7 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { useDownvoteMutation, useGetCommentsQuery, useGetPostDetailQuery, useSaveMutation, useUpvoteMutation } from '../Api/Posts'
+import { useCommentMutation, useDownvoteMutation, useGetCommentsQuery, useGetPostDetailQuery, useSaveMutation, useUpvoteMutation } from '../Api/Posts'
 import { useSelector } from 'react-redux'
 import DetailPostShimmer from '../Components/DetailPostShimmer'
 import DonateModal from '../Components/DonateModal'
@@ -19,25 +19,44 @@ import ReportModal from '../Components/ReportModal'
 const DetailedPostScreen = () => {
 
     const userState = useSelector((state) => state.userInfo.userInfo)
-    const params=useRoute().params.data
-    const slug = params.slug
+    const params=useRoute().params
+    console.log(useRoute().params)
+    const slug = params.data.slug
     const token = userState.accessToken
-   
     // console.log({slug})
     const { data, error, isLoading } = useGetPostDetailQuery({ slug, token })
-    isLoading ? console.log('waiting') : console.log(data)
+    // isLoading ? console.log('waiting') : console.log(data)
     // console.log(data)
 
     const {data:dataComment,errorComment,isLoadingComment} = useGetCommentsQuery({slug,token})
-    const [upvote, setUpvotes] = useState(params.upvote_count)
-    const [downvote, setDownvote] = useState(params.downvote_count)
-    const [isUpvoted, setIsUpvoted] = useState(params.is_upvoted);
-    const [isDownvoted, setIsDownvoted] = useState(params.is_downvoted);
-    const [isSaved, setIsSaved] = useState(false);
-    const [isReport, setIsReport] = useState(false);
-    const [isDonate, setIsDonate] = useState(false);
+    const [commentCount, setCommentCount] = useState(0);
+    const [commentList, setCommentList] = useState([]);
+    const [userComment, setUserComment] = useState("");
+    const[commentMutation]=useCommentMutation()
+    const [upvote, setUpvotes] = useState()
+    const [downvote, setDownvote] = useState()
+    const [isUpvoted, setIsUpvoted] = useState();
+    const [isDownvoted, setIsDownvoted] = useState();
+    const [isSaved, setIsSaved] = useState();
+    const [isReport, setIsReport] = useState();
+    const [isDonate, setIsDonate] = useState();
 
-
+    useEffect(() => {
+        if (data) {
+          setUpvotes(data.upvote_count);
+          setDownvote(data.downvote_count);
+          setIsUpvoted(data.is_upvoted);
+          setIsDownvoted(data.is_downvoted);
+          setIsSaved(data.is_saved);
+          setCommentCount(data.comment_count);
+        }
+      }, [data]);
+    
+      useEffect(() => {
+        if (dataComment) {
+          setCommentList(dataComment);
+        }
+      }, [dataComment]);
 
     const [upvoteMutation] = useUpvoteMutation()
     const [downvoteMutation] = useDownvoteMutation()
@@ -52,6 +71,7 @@ const DetailedPostScreen = () => {
           saveMutation({slug,token}).then(data=>console.log(data))
         }
     }
+
     const handleReport=()=>{
         setIsReport(true)
     }
@@ -59,10 +79,29 @@ const DetailedPostScreen = () => {
         setIsDonate(true)
     }
 
+     
+    const handleSubmitComment = async (event,body) => {
+        // event.persist();
+        const formData = new FormData();
+        formData.append("body", body);
+        formData.append("slug", slug);
+      
+        try {
+          const response = await commentMutation({formData,token});
+          console.log("comment",response)
+          setCommentList([...commentList, response.data]);
+          setCommentCount(commentCount + 1);
+          setUserComment('')
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      };
 
     const handleUpvote = (event) => {
       // console.log(event.timestamp).type.target.
-      event.stopPropagation();
+    //   event.stopPropagation();
+      params.handleUpvote()
+
       if (!isUpvoted) {
         setUpvotes(upvote + 1)
         setIsUpvoted(true)
@@ -79,7 +118,8 @@ const DetailedPostScreen = () => {
     }
   
     const handleDownvote = (event) => {
-      event.stopPropagation();
+    //   event.stopPropagation();
+      params.handleDownvote()
   
       if (!isDownvoted) {
         setDownvote(downvote + 1)
@@ -110,7 +150,8 @@ const DetailedPostScreen = () => {
 
 
 
-    const ref = React.useRef(null)
+
+    const ref = useRef(null)
     const [index, setIndex] = useState(0)
     const videoSection = [{ title: "Seeker Video", url: data?.post_videos.videos.seeker_video }, { title: "Place Video", url: data?.post_videos.videos.place_video }]
 
@@ -140,7 +181,13 @@ const DetailedPostScreen = () => {
         }
     }
     useEffect(() => {
-        ref.current.scrollToIndex({ index: index, animated: true })
+        try{
+            if (ref.current && index !== null) {
+                ref.current.scrollToIndex({ index: index, animated: true });
+              }     
+            }catch(err){
+            console.log(err)
+        }
     }, [index])
 
 
@@ -161,8 +208,8 @@ const DetailedPostScreen = () => {
             <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
                 <KeyboardAvoidingView >
                     <ScrollView showsVerticalScrollIndicator={false} >
-                        <DonateModal isDonate={isDonate} setIsDonate={setIsDonate} slug={slug} token={token} />
-                        <ReportModal isReport={isReport} setIsReport={setIsReport} />
+                        <DonateModal isDonate={isDonate?true:false} setIsDonate={setIsDonate} slug={slug} token={token} />
+                        <ReportModal isReport={isReport?true:false} setIsReport={setIsReport} slug={slug} token={token} />
                         <View style={{ width: responsiveWidth(100), height: responsiveHeight(42) }}>
                             <Animated.View style={{
                                 opacity: leftButtonOpacity, width: 30,
@@ -309,19 +356,19 @@ const DetailedPostScreen = () => {
                             <View style={{ padding: responsiveWidth(2), marginBottom: responsiveHeight(1) }}>
                                 <Text style={{ fontSize: responsiveWidth(6), padding: responsiveWidth(1), fontWeight: 'bold' }}>Comments</Text>
                                 <View style={{ padding: responsiveWidth(1), flexDirection: 'row' }}>
-                                    <TextInput placeholder='Add a comment...' style={{ backgroundColor: '#DCEFFF', width: responsiveWidth(75), height: responsiveHeight(6) }}></TextInput>
-                                    <TouchableOpacity style={{ marginLeft: responsiveWidth(.5), backgroundColor: '#1684E4', justifyContent: 'center', width: responsiveWidth(20), height: responsiveHeight(6) }}>
+                                    <TextInput placeholder='Add a comment...' style={{ backgroundColor: '#DCEFFF', width: responsiveWidth(75), height: responsiveHeight(6) }} onChangeText={(text)=>{setUserComment(text)}} >{userComment}</TextInput>
+                                    <TouchableOpacity disabled={userComment.trim()==""?true:false}onPress={(e)=>{handleSubmitComment(e,userComment)}} style={{ marginLeft: responsiveWidth(.5), backgroundColor: userComment.trim()==""?"gray":'#1684E4', justifyContent: 'center', width: responsiveWidth(20), height: responsiveHeight(6) }}>
                                         <Text style={{ textAlign: 'center' }}>Comment</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{ padding: responsiveWidth(1) }}>
                                     {
-                                        dataComment?.map((item, index) => {
+                                        commentList?.map((item, index) => {
                                             return (
                                                 <View key={index} style={{ flexDirection: 'row', alignItems: 'center', padding: responsiveWidth(1), marginBottom: responsiveHeight(1) }}>
                                                     <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' }}>
-                                                        <Text style={{ fontWeight: 'bold', fontSize: responsiveWidth(5), color: 'black', backgroundColor: 'white', marginBottom: responsiveWidth(1) }}>{item.user}</Text>
-                                                        <Text style={{ fontWeight: 'heavy', fontSize: responsiveWidth(5), color: 'black', backgroundColor: 'white', marginBottom: responsiveWidth(1) }}>{item.body}</Text>
+                                                        <Text style={{ fontWeight: 'bold', fontSize: responsiveWidth(5), color: 'black', backgroundColor: 'white', marginBottom: responsiveWidth(1) }}>{item?.user}</Text>
+                                                        <Text style={{ fontWeight: 'heavy', fontSize: responsiveWidth(5), color: 'black', backgroundColor: 'white', marginBottom: responsiveWidth(1) }}>{item?.body}</Text>
                                                     </View>
                                                     {/* <Text>{item.created}</Text> */}
                                                 </View>

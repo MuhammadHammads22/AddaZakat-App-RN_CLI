@@ -7,7 +7,7 @@ const initialState = {
     email: 'demo.user@addazakat.com',
     errorEmail: '',
     isErrorEmail: false,
-    password: 'demo123',
+    password: 'ubaida21',
     errorPassword: '',
     isErrorPassword: false,
     passwordHidden: true

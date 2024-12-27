@@ -3,6 +3,27 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState = {
     post:
     {
+        seekerVideoUri:"",
+        errorSeekerVideoUri:"",
+        isErrorSeekerVideoUri:false,
+        seekerResidenceVideoUri:"",
+        errorSeekerResidenceVideoUri:"",
+        isErrorSeekerResidenceVideoUri:false,
+        electricBillUri:"",
+        errorElectricBillUri:"",
+        isErrorElectricBillUri:false,
+        seekerVideoUrl:"",
+        errorSeekerVideoUrl:"",
+        isErrorSeekerVideoUrl:false,
+        seekerResidenceVideoUrl:"",
+        errorSeekerResidenceVideoUrl:"",
+        isErrorSeekerResidenceVideoUrl:false,
+        electricBillUrl:"",
+        errorElectricBillUrl:"",
+        isErrorElectricBillUrl:false,
+        description: "",
+        errorDescription:"",
+        isErrorDescription:false,
         seeker: "",
         errorSeeker:"",
         isErrorSeeker:false,
@@ -24,21 +45,82 @@ const initialState = {
         amountNeeded: 0,
         errorAmountNeeded:"",
         isErrorAmountNeeded:false,
-        description: "",
-        errorDescription:"",
-        isErrorDescription:false,
         typeOfDonation: "",
         errorTypeOfDonation:"",
         isErrorTypeOfDonation:false,
+        purpose:"",
+        errorPurpose:"",
+        isErrorPurpose:"",
         creator: "",
-        errorCreator:"",
-        isErrorCreator:""
     }
 }
 const createPostSlice = createSlice({
     name: 'createPost',
     initialState,
     reducers: {
+        setSeekerVideoUri(state,action){
+            state.post.seekerVideoUri = action.payload;
+        },
+        setErrorSeekerVideoUri(state, action) {
+            state.post.errorSeekerVideoUri = action.payload;
+        },
+        setIsErrorSeekerVideoUri(state, action) {
+            state.post.isErrorSeekerVideoUri = action.payload;
+        },
+        setElectricBillUri(state,action){
+            state.post.electricBillUri = action.payload;
+        },
+        setErrorElectricBillUri(state, action) {
+            state.post.errorElectricBillUri = action.payload;
+        },
+        setIsErrorElectricBillUri(state, action) {
+            state.post.isErrorElectricBillUri = action.payload;
+        },
+        setElectricBillUrl(state,action){
+            state.post.electricBillUri = action.payload;
+        },
+        setErrorElectricBillUrl(state, action) {
+            state.post.errorElectricBillUri = action.payload;
+        },
+        setIsErrorElectricBillUrl(state, action) {
+            state.post.isErrorElectricBillUri = action.payload;
+        },
+        setSeekerResidenceVideoUri(state, action) {
+            state.post.seekerResidenceVideoUri = action.payload;
+        },
+        setErrorSeekerResidenceVideoUri(state, action) {
+            state.post.errorSeekerResidenceVideoUri = action.payload;
+        },
+        setIsErrorSeekerResidenceVideoUri(state, action) {
+            state.post.isErrorSeekerResidenceVideoUri = action.payload;
+        },
+        setSeekerVideoUrl(state,action){
+            state.post.seekerVideoUrl = action.payload;
+        },
+        setErrorSeekerVideoUrl(state, action) {
+            state.post.errorSeekerVideoUrl = action.payload;
+        },
+        setIsErrorSeekerVideoUrl(state, action) {
+            state.post.isErrorSeekerVideoUrl = action.payload;
+        },
+        setSeekerResidenceVideoUrl(state, action) {
+            state.post.seekerResidenceVideoUrl = action.payload;
+        },
+        setErrorSeekerResidenceVideoUrl(state, action) {
+            state.post.errorSeekerResidenceVideoUrl = action.payload;
+        },
+        setIsErrorSeekerResidenceVideoUrl(state, action) {
+            state.post.isErrorSeekerResidenceVideoUrl = action.payload;
+        },
+        setDescription(state, action) {
+            state.post.description = action.payload;
+        },
+        setErrorDescription(state, action) {
+            state.post.errorDescription = action.payload;
+        },
+        setIsErrorDescription(state, action) {
+            state.post.isErrorDescription = action.payload;
+        },
         setSeeker(state, action) {
             state.post.seeker = action.payload
         },
@@ -73,7 +155,7 @@ const createPostSlice = createSlice({
             state.post.errorBankName = action.payload;
         },
         setIsErrorBankName(state, action) {
-            state.post.errorBankName = action.payload;
+            state.post.isErrorBankName = action.payload;
         },
         setAccountTitle(state, action) {
             state.post.accountTitle = action.payload;
@@ -101,16 +183,16 @@ const createPostSlice = createSlice({
         }, 
         setIsErrorAmountNeeded(state, action) {
             state.post.isErrorAmountNeeded = action.payload;
-        },       
-        setDescription(state, action) {
-            state.post.description = action.payload;
+        },      
+        setPurpose(state, action) {
+            state.post.purpose = action.payload;
         },
-        setErrorDescription(state, action) {
-            state.post.errorDescription = action.payload;
-        },
-        setIsErrorDescription(state, action) {
-            state.post.isErrorDescription = action.payload;
-        },
+        setErrorPurpose(state, action) {
+            state.post.errorPurpose = action.payload;
+        }, 
+        setIsErrorPurpose(state, action) {
+            state.post.isErrorPurpose = action.payload;
+        },        
         setTypeOfDonation(state, action) {
             state.post.typeOfDonation = action.payload;
         },
@@ -123,16 +205,85 @@ const createPostSlice = createSlice({
         setCreator(state, action) {
             state.post.creator = action.payload;
         },
-        setErrorCreator(state, action) {
-            state.post.errorCreator = action.payload;
-        },
-        setIsErrorCreator(state, action) {
-            state.post.isErrorCreator = action.payload;
+        setToInitial(state,action){
+            state.post={
+                seekerVideoUri:"",
+                errorSeekerVideoUri:"",
+                isErrorSeekerVideoUri:false,
+                seekerResidenceVideoUri:"",
+                errorSeekerResidenceVideoUri:"",
+                isErrorSeekerResidenceVideoUri:false,
+                electricBillUri:"",
+                errorElectricBillUri:"",
+                isErrorElectricBillUri:false,
+                seekerVideoUrl:"",
+                errorSeekerVideoUrl:"",
+                isErrorSeekerVideoUrl:false,
+                seekerResidenceVideoUrl:"",
+                errorSeekerResidenceVideoUrl:"",
+                isErrorSeekerResidenceVideoUrl:false,
+                electricBillUrl:"",
+                errorElectricBillUrl:"",
+                isErrorElectricBillUrl:false,
+                description: "",
+                errorDescription:"",
+                isErrorDescription:false,
+                seeker: "",
+                errorSeeker:"",
+                isErrorSeeker:false,
+                phoneNumber: "",
+                errorPhoneNumber:"",
+                isErrorPhoneNumber:"",
+                address: "",
+                isErrorAddress:false,
+                errorAddress:"",
+                bankName: "",
+                errorBankName:"",
+                isErrorBankName:false,
+                accountTitle: "",
+                errorAccountTitle:"",
+                isErrorAccountTitle:false,
+                accountNumber: "",
+                errorAccountNumber:"",
+                isErrorAccountNumber:false,
+                amountNeeded: 0,
+                errorAmountNeeded:"",
+                isErrorAmountNeeded:false,
+                typeOfDonation: "",
+                errorTypeOfDonation:"",
+                isErrorTypeOfDonation:false,
+                purpose:"",
+                errorPurpose:"",
+                isErrorPurpose:"",
+                creator: "",
+            }
         }
     }
 });
 
 export const {
+    setToInitial,
+    setSeekerVideoUri,
+    setErrorSeekerVideoUri,
+    setIsErrorSeekerVideoUri,
+    setSeekerResidenceVideoUri,
+    setErrorSeekerResidenceVideoUri,
+    setIsErrorSeekerResidenceVideoUri,
+    setSeekerVideoUrl,
+    setErrorSeekerVideoUrl,
+    setIsErrorSeekerVideoUrl,
+    setSeekerResidenceVideoUrl,
+    setErrorSeekerResidenceVideoUrl,
+    setIsErrorSeekerResidenceVideoUrl,
+    setElectricBillUri,
+    setErrorElectricBillUri,
+    setIsErrorElectricBillUri,
+    setElectricBillUrl,
+    setErrorElectricBillUrl,
+    setIsErrorElectricBillUrl,
+    setDescription,
+    setErrorDescription,
+    setIsErrorDescription,
     setSeeker,
     setErrorSeeker,
     setIsErrorSeeker,
@@ -154,14 +305,12 @@ export const {
     setAmountNeeded,
     setErrorAmountNeeded,
     setIsErrorAmountNeeded,
-    setDescription,
-    setErrorDescription,
-    setIsErrorDescription,
+    setPurpose,
+    setErrorPurpose,
+    setIsErrorPurpose,
     setTypeOfDonation,
     setErrorTypeOfDonation,
     setIsErrorTypeOfDonation,
-    setCreator,
-    setErrorCreator,
-    setIsErrorCreator
+    setCreator
 } = createPostSlice.actions;
 export default createPostSlice.reducer;

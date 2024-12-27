@@ -17,7 +17,7 @@ const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 const PostCard = (post) => {
   const userState = useSelector((state) => state.userInfo.userInfo)
   // console.log("user state from post card",userState.accessToken)
-  // console.log('token prop',post.postData.item)
+  // console.log('token prop',post)
   // upvote handling! 
   const screenWidth = Dimensions.get('window')
   // useEffect(()=>{
@@ -26,17 +26,17 @@ const PostCard = (post) => {
   // console.log(post.postData.item)
   const [carouselData, setCarouselData] = useState(["https://addazakat.s3.ap-south-1.amazonaws.com/posts/abuubaida01/1.mp4", "https://addazakat.s3.ap-south-1.amazonaws.com/posts/abuubaida01/5.mp4"])
   const [loading, setLoading] = useState(post.isLoading)
-  const [upvote, setUpvotes] = useState(post.postData.item.upvote_count)
-  const [downvote, setDownvote] = useState(post.postData.item.downvote_count)
-  const [isUpvoted, setIsUpvoted] = useState(post.postData.item.is_upvoted);
-  const [isDownvoted, setIsDownvoted] = useState(post.postData.item.is_downvoted);
+  const [upvote, setUpvotes] = useState(post.postData.upvote_count)
+  const [downvote, setDownvote] = useState(post.postData.downvote_count)
+  const [isUpvoted, setIsUpvoted] = useState(post.postData.is_upvoted);
+  const [isDownvoted, setIsDownvoted] = useState(post.postData.is_downvoted);
 
   const [upvoteMutation] = useUpvoteMutation()
   const [downvoteMutation] = useDownvoteMutation()
 
   const handleUpvote = (event) => {
     // console.log(event.timestamp).type.target.
-    event.stopPropagation();
+    // event.stopPropagation();
     if (!isUpvoted) {
       setUpvotes(upvote + 1)
       setIsUpvoted(true)
@@ -44,16 +44,16 @@ const PostCard = (post) => {
         setDownvote(downvote - 1)
         setIsDownvoted(false)
       };
-      upvoteMutation({ slug: post.postData.item.slug, token: userState.accessToken }).then((data) => console.log(data))
+      upvoteMutation({ slug: post.postData.slug, token: userState.accessToken }).then((data) => console.log(data))
     } else {
       setUpvotes(upvote - 1)
       setIsUpvoted(false)
-      upvoteMutation({ slug: post.postData.item.slug, token: userState.accessToken }).then((data) => console.log(data))
+      upvoteMutation({ slug: post.postData.slug, token: userState.accessToken }).then((data) => console.log(data))
     }
   }
 
   const handleDownvote = (event) => {
-    event.stopPropagation();
+    // event.stopPropagation();
 
     if (!isDownvoted) {
       setDownvote(downvote + 1)
@@ -62,32 +62,32 @@ const PostCard = (post) => {
         setUpvotes(upvote - 1)
         setIsUpvoted(false)
       };
-      downvoteMutation({ slug: post.postData.item.slug, token: userState.accessToken }).then((data) => console.log(data))
+      downvoteMutation({ slug: post.postData.slug, token: userState.accessToken }).then((data) => console.log(data))
     } else {
       setDownvote(downvote - 1)
       setIsDownvoted(false)
-      downvoteMutation({ slug: post.postData.item.slug, token: userState.accessToken }).then((data) => console.log(data))
+      downvoteMutation({ slug: post.postData.slug, token: userState.accessToken }).then((data) => console.log(data))
     }
   }
 
-  const handleCommentClick = () => {
-    post.navigation.navigate('CommentsScreen', { slug: post.postData.item.slug })
-  };
+  // const handleCommentClick = () => {
+  //   post.navigation.navigate('CommentsScreen', { slug: post.postData.slug })
+  // };
 
   return (
-    <TouchableOpacity onPress={() => { post.navigation.navigate('DetailedPostScreen', { data: post.postData.item }) }}>
+    <TouchableOpacity onPress={() => { post.navigation.navigate('DetailedPostScreen', { data: post.postData,handleUpvote:handleUpvote,handleDownvote:handleDownvote }) }}>
       <View style={styles.mainPost}>
         <View style={styles.upperPost}>
           {/* postheader */}
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: responsiveWidth(2) }}>
             {/* avatar+name close */}
             {/* <View style={styles.avatar}></View> */}
-            <Text style={styles.name}>{post.postData.item.creator}</Text>
+            <Text style={styles.name}>{post.postData.creator}</Text>
             <Entypo name="dots-three-vertical" size={24} color="#73788B" />
           </View>
           {/* post description section */}
           <View>
-            <Text style={styles.description}>{post.postData.item.description}</Text>
+            <Text style={styles.description}>{post.postData.description}</Text>
           </View>
           {/* video section */}
           {/* <View style={styles.postImage}> */}
@@ -115,18 +115,18 @@ const PostCard = (post) => {
         {/* likes comment section */}
         <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-around', backgroundColor: 'white', marginVertical: responsiveHeight(1) }}>
           <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-around', alignItems: 'center' }}>
-            <TouchableOpacity onPress={handleUpvote}>
+            {/* <TouchableOpacity onPress={handleUpvote}> */}
               <View style={styles.commentSectionIconContainer}>
                 <MaterialCommunityIcons style={{ padding: responsiveWidth(.5) }} name="arrow-up-bold-outline" size={responsiveWidth(6)} color="gray" />
                 <Text style={styles.commentSectionIconSupportingText}>{upvote}</Text>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleDownvote}>
+            {/* </TouchableOpacity> */}
+            {/* <TouchableOpacity onPress={handleDownvote}> */}
               <View style={styles.commentSectionIconContainer}>
                 <MaterialCommunityIcons style={{ padding: responsiveWidth(1) }} name="arrow-down-bold-outline" size={responsiveWidth(6)} color="gray" />
                 <Text style={styles.commentSectionIconSupportingText}>{downvote}</Text>
               </View>
-            </TouchableOpacity>
+            {/* </TouchableOpacity> */}
             {/* <TouchableOpacity onPress={handleCommentClick}>
               <View style={styles.commentSectionIconContainer}>
                 <FontAwesome style={{ padding: responsiveWidth(.5) }} name="comments" size={responsiveWidth(6)} color="gray" />
@@ -136,12 +136,12 @@ const PostCard = (post) => {
 
             <View style={styles.commentSectionIconContainer}>
               <Text style={{ fontWeight: 'bold', fontSize: responsiveWidth(3.5), padding: responsiveWidth(1) }}>Donors</Text>
-              <Text style={styles.commentSectionIconSupportingText}>{post.postData.item.donors_count}</Text>
+              <Text style={styles.commentSectionIconSupportingText}>{post.postData.donors_count}</Text>
             </View>
 
             <View style={styles.commentSectionIconContainer}>
               <Text style={{ fontWeight: 'bold', fontSize: responsiveWidth(3.5) }}>Reports</Text>
-              <Text style={styles.commentSectionIconSupportingText}>{post.postData.item.report_count}</Text>
+              <Text style={styles.commentSectionIconSupportingText}>{post.postData.report_count}</Text>
             </View>
           </View>
 

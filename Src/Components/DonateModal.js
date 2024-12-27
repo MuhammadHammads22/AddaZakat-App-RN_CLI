@@ -1,11 +1,34 @@
 import { View, Text, Modal, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView, Keyboard } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
+import { useDonateMutation } from '../Api/Posts'
 
-const DonateModal = ({ isDonate, setIsDonate }) => {
+const DonateModal = ({ isDonate, setIsDonate,slug,token }) => {
     const [amount, setAmount] = useState()
     const [isKeyboardShown, setIsKeyboardShown] = useState(false)
     const scrollViewRef = useRef();
+    const [donateMutation] = useDonateMutation();
+
+    const handleSubmitDonation = async (event, closePopup) => {
+    //   event.preventDefault();
+      const formData = new FormData();
+      formData.append("slug", slug);
+      formData.append('amount', amount);
+      try {
+        const response = await donateMutation({formData,token}); // Await the API call
+        console.log(response);
+        setAmount(0); // Reset the amount field
+        setIsDonate(false)
+  
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  
+
+
+
+
     isKeyboardShown & (scrollViewRef.current?.scrollToEnd({ animated: true }))
 
 
@@ -74,8 +97,8 @@ const DonateModal = ({ isDonate, setIsDonate }) => {
                                         style={{ backgroundColor: '#4B5563', padding: responsiveWidth(2.2), margin: responsiveWidth(2), borderRadius: responsiveWidth(3) }}>
                                         <Text style={{ color:'white',fontSize: responsiveHeight(2), fontWeight: 'bold'}}>Close</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => { }}
-                                        style={{ backgroundColor: '#03bafc', padding: responsiveWidth(2.2), margin: responsiveWidth(2), borderRadius: responsiveWidth(3) }}>
+                                    <TouchableOpacity disabled={amount?false:true} onPress={() => {handleSubmitDonation() }}
+                                        style={{ backgroundColor: amount?'#03bafc':'gray', padding: responsiveWidth(2.2), margin: responsiveWidth(2), borderRadius: responsiveWidth(3) }}>
                                         <Text style={{ fontSize: responsiveHeight(2), fontWeight: 'bold', color: 'white' }}>Submit</Text>
                                     </TouchableOpacity>
                                 </View>

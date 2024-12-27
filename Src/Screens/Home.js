@@ -16,7 +16,7 @@ import { setUserInfo } from '../Slices/UserSlice'
 import PostCard from '../Components/PostCard'
 import PostShimmer from '../Components/PostShimmer'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import tailwind from 'tailwind-rn';
+// import tailwind from 'tailwind-rn';
 
 
 
@@ -74,7 +74,7 @@ const Home = ({ navigation }) => {
   // const { data, error, isLoading } = useGetPostListQuery({ token: userState.accessToken });
   // isLoading?console.log('waiting'):console.log(data.results)
   const fetchPosts = async ({ pageParam = 1 }) => {
-    const response = await fetch(`https://api.addazakat.com/post/get-posts/?page=${pageParam}`, {
+    const response = await fetch(`https://api.addazakat.com/post/get-posts/?page=${pageParam}/`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -83,8 +83,8 @@ const Home = ({ navigation }) => {
       throw new Error('Failed to fetch posts');
     }
     const data = await response.json();
+    console.log(data)
     return data;
-
   };
   const {
     data,
@@ -99,7 +99,7 @@ const Home = ({ navigation }) => {
     getNextPageParam: (lastPage) => lastPage?.next ? lastPage.next : undefined,
   });
 
-
+// console.log(data)
   useEffect(() => {
     async function getToken() {
 
@@ -138,46 +138,43 @@ const Home = ({ navigation }) => {
       </Animated.View>
       {/* {console.log(data)} */}
 
-      {data ? data.pages.map((page, pageIndex) => {
-        return (
+     
           <FlatList
             style={styles.feed}
-            key={pageIndex}
-            data={page.results}
-            renderItem={(post) => {
-              return (
-                <PostCard postData={post} key={post.index} navigation={navigation} isLoading={isLoading} />
-              ) || <Text key={pageIndex}>No posts available</Text>
-            }}
+            data={data ? data.pages.flatMap((page) => page.results) : [1, 1, 1, 1]} // Conditionally set data
+  renderItem={({ item, index }) => {
+    if (data) {
+      return (
+        <PostCard
+          postData={item}
+          key={index}
+          navigation={navigation}
+          isLoading={isLoading}
+        />
+      );
+    } else {
+      // Render shimmer for loading state
+      return <PostShimmer key={index} />;
+    }
+  }}
             showsVerticalScrollIndicator={false}
             onScroll={handleScroll} // Bind the scroll event to Animated.event
             scrollEventThrottle={10} // Throttle scroll events to improve performance
+            ListFooterComponent=
+              { hasNextPage ? (
+      <TouchableOpacity 
+        style={{ alignSelf:'center',backgroundColor: 'black',alignItems:'center',justifyContent:'center',borderRadius:responsiveWidth(6), padding: 10, width:responsiveWidth(40),alignItems: 'center',margin:30, marginBottom: 90 }} 
+        onPress={fetchNextPage} 
+        disabled={isFetchingNextPage}
+      >
+        <Text style={{ color: 'white' }}>
+          {isFetchingNextPage ? 'Loading more...' : 'Load More'}
+        </Text>
+      </TouchableOpacity>
+    ) : null
+        }
           ></FlatList>
-        )
-      })
-
-        :
-        <FlatList
-          style={styles.feed}
-          data={[1, 1, 1, 1,]}
-          renderItem={() =>
-            <PostShimmer />
-          }
-
-          showsVerticalScrollIndicator={false}
-        ></FlatList>
-
-
-
-
-      }
-
-
-
-
-
-
-
+        
 
     </SafeAreaView>
   )
@@ -191,6 +188,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#EBECF4"
   },
   feed: {
+    // alignItems:'center',
+    // justifyContent:'center',
     paddingTop:responsiveHeight(9)
   }
 });

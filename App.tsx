@@ -20,7 +20,7 @@ import {  store } from './Src/store/Store';
 import SignUpForm from './Src/Screens/Signup';
 import EmailVerification from './Src/Screens/EmailVerificationScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MyDrawer  from './Src/Screens/DrawerNavigator';
+// import MyDrawer  from './Src/Screens/DrawerNavigator';
 import HomeGraph from './Src/Screens/HomeGraph';
 import CommentScreen from './Src/Screens/CommentScreen';
 import { getAccessToken, getUserData } from './Src/store/localStore';
@@ -30,6 +30,7 @@ import DetailedPostScreen from './Src/Screens/DetailedPostScreen';
 // import { useColorScheme } from 'react-native-appearance';
 // import { PersistGate } from 'redux-persist/integration/react';
 import { QueryClient,QueryClientProvider } from '@tanstack/react-query';
+// import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 function App(){
 
@@ -95,6 +96,7 @@ function MyStack() {
   
   // export const persistor=persistStore(store);
 return(
+  // <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <Provider store={store}>
           <QueryClientProvider client={queryClient}>
@@ -104,6 +106,7 @@ return(
           </QueryClientProvider>
         </Provider>
       </NavigationContainer>
+    // {/* </GestureHandlerRootView> */}
 )
 
 }
